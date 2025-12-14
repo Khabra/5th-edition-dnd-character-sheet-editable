@@ -3,25 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hoja de Personaje D&D 5e</title>
+    <title>Hoja de Personaje D&D 5e (Estática)</title>
     <style>
         :root {
             --border-color: #2b2b2b;
             --bg-paper: #f9f1d5;
+            --bg-dark: #e3dac0;
+            --primary: darkred;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e3dac0;
+            background-color: var(--bg-dark);
             margin: 0;
             padding: 20px;
             font-size: 11px;
-            height: 100vh;
             box-sizing: border-box;
         }
         .sheet-container {
             background-color: var(--bg-paper);
             width: 1100px;
-            height: 1350px; 
+            min-height: 1350px; 
             margin: 0 auto;
             padding: 40px;
             box-shadow: 0 0 15px rgba(0,0,0,0.2);
@@ -32,6 +33,7 @@
             color: #1a1a1a;
         }
 
+        /* --- INPUTS --- */
         input[type="text"], input[type="number"], textarea {
             border: none;
             border-bottom: 1px solid #7a7058;
@@ -58,6 +60,7 @@
         }
         .label-left { text-align: left; }
         
+        /* --- HEADER --- */
         header {
             display: flex;
             justify-content: space-between;
@@ -84,24 +87,10 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .logo-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .logo-img { width: 100%; height: 100%; object-fit: cover; }
 
-        .header-left {
-            width: 30%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-        }
-
-        .char-name-input {
-            font-size: 24px !important;
-            height: 40px;
-            border-color: #4a4030 !important;
-        }
+        .header-left { width: 30%; display: flex; flex-direction: column; justify-content: flex-end; }
+        .char-name-input { font-size: 24px !important; height: 40px; border-color: #4a4030 !important; }
 
         .header-right {
             width: 55%;
@@ -111,53 +100,25 @@
             margin-top: 20px; 
             padding-right: 110px;
         }
-        .header-box {
-            border: 1px solid #b3a580;
-            padding: 5px;
-            background: rgba(255,255,255,0.2);
-        }
+        .header-box { border: 1px solid #b3a580; padding: 5px; background: rgba(255,255,255,0.2); }
 
+        /* --- GRID PRINCIPAL --- */
         main {
             display: grid;
             grid-template-columns: 300px 1fr 1fr;
             gap: 20px;
             flex-grow: 1;
-            height: 100%;
         }
 
-        .col-combat, .col-traits {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            height: 100%; 
+        .col-combat, .col-traits, .col-stats-complex {
+            display: flex; flex-direction: column; gap: 10px; height: 100%; 
         }
 
-        .col-stats-complex {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .stats-top-section { display: flex; gap: 10px; }
+        .attributes-stack { display: flex; flex-direction: column; gap: 15px; width: 90px; flex-shrink: 0; }
+        .skills-stack { display: flex; flex-direction: column; gap: 10px; width: 100%; }
 
-        .stats-top-section {
-            display: flex;
-            gap: 10px;
-        }
-
-        .attributes-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 90px;
-            flex-shrink: 0;
-        }
-
-        .skills-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 100%;
-        }
-
+        /* --- STATS BOXES --- */
         .ability-box {
             border: 2px solid #1a1a1a;
             border-radius: 10px;
@@ -170,167 +131,114 @@
             align-items: center;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
         }
-        
-        .ability-label {
-            font-weight: bold;
-            font-size: 10px;
-            margin-top: 5px;
-        }
-
-        .ability-score {
-            font-size: 26px;
-            text-align: center;
-            border: none !important;
-            width: 50px !important;
-            margin-top: 0px;
-        }
-
+        .ability-label { font-weight: bold; font-size: 10px; margin-top: 5px; }
+        .ability-score { font-size: 26px; text-align: center; border: none !important; width: 50px !important; margin-top: 0px; }
         .ability-mod-circle {
-            position: absolute;
-            bottom: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 25px;
-            background: var(--bg-paper);
-            border: 2px solid #1a1a1a;
-            border-radius: 15px;
-            z-index: 5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%);
+            width: 40px; height: 25px; background: var(--bg-paper); border: 2px solid #1a1a1a;
+            border-radius: 15px; z-index: 5; display: flex; align-items: center; justify-content: center;
         }
-        
-        .ability-mod-input {
-            width: 30px !important;
-            border: none !important;
-            text-align: center;
-            font-weight: bold;
-            font-size: 14px;
-        }
+        .ability-mod-input { width: 30px !important; border: none !important; text-align: center; font-weight: bold; font-size: 14px; }
 
+        /* --- SKILLS & LISTS --- */
         .small-stat-row {
-            display: flex;
-            align-items: center;
-            border: 2px solid #1a1a1a;
-            border-radius: 10px;
-            padding: 5px;
-            margin-bottom: 5px;
-            background: rgba(255,255,255,0.2);
+            display: flex; align-items: center; border: 2px solid #1a1a1a; border-radius: 10px; padding: 5px;
+            margin-bottom: 5px; background: rgba(255,255,255,0.2);
         }
-        .small-stat-row input { 
-            width: 40px; 
-            margin-right: 10px; 
-            text-align: center; 
-            flex-shrink: 0;
-            font-size: 14px;
-            font-weight: bold;
-        }
+        .small-stat-row input { width: 40px; margin-right: 10px; text-align: center; font-weight: bold; font-size: 14px; }
         
-        .list-section {
-            border: 1px solid #1a1a1a;
-            padding: 8px;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.2);
-        }
+        .list-section { border: 1px solid #1a1a1a; padding: 8px; border-radius: 10px; background: rgba(255,255,255,0.2); }
         
-        .skill-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2px;
-            white-space: nowrap;
-        }
+        .skill-row { display: flex; align-items: center; margin-bottom: 2px; white-space: nowrap; }
         .skill-row input[type="checkbox"] { margin-right: 5px; transform: scale(0.9); }
-        .skill-row input[type="number"] {
-            width: 30px;
-            text-align: center;
-            margin-right: 8px;
-            border: none;
-            border-bottom: 1px solid #7a7058;
-            font-size: 12px;
-            font-weight: bold;
-        }
+        .skill-row input[type="number"] { width: 30px; text-align: center; margin-right: 8px; border: none; border-bottom: 1px solid #7a7058; font-size: 12px; font-weight: bold; }
 
         .passive-percep-box {
-            border: 2px solid #7a7058;
-            border-radius: 20px;
-            padding: 5px 15px;
-            display: flex;
-            align-items: center;
-            color: #4a4030;
-            margin-top: 10px;
-            background: rgba(255,255,255,0.2);
+            border: 2px solid #7a7058; border-radius: 20px; padding: 5px 15px; display: flex; align-items: center;
+            color: #4a4030; margin-top: 10px; background: rgba(255,255,255,0.2);
         }
         
         .other-profs-box {
-            border: 2px solid #1a1a1a;
-            border-radius: 10px;
-            padding: 10px;
-            margin-top: 10px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            background: rgba(255,255,255,0.2);
+            border: 2px solid #1a1a1a; border-radius: 10px; padding: 10px; margin-top: 10px; flex-grow: 1;
+            display: flex; flex-direction: column; background: rgba(255,255,255,0.2);
         }
 
-        .flex-grow-box {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        .flex-grow-box textarea {
-            flex-grow: 1;
-            height: 100%;
-            resize: none;
-        }
+        .flex-grow-box { flex-grow: 1; display: flex; flex-direction: column; }
+        .flex-grow-box textarea { flex-grow: 1; height: 100%; resize: none; }
 
+        /* --- COMBAT & TRAITS --- */
         .combat-header { display: flex; justify-content: space-around; gap: 5px; flex-shrink: 0; }
         .shield-box {
-            border: 2px solid #1a1a1a;
-            padding: 5px;
-            text-align: center;
-            border-radius: 5px;
-            width: 30%;
-            background: rgba(255,255,255,0.3);
+            border: 2px solid #1a1a1a; padding: 5px; text-align: center; border-radius: 5px;
+            width: 30%; background: rgba(255,255,255,0.3);
         }
         .hp-box {
-            border: 2px solid #1a1a1a;
-            border-radius: 10px;
-            padding: 10px;
-            min-height: 80px;
-            flex-shrink: 0;
-            background: rgba(255,255,255,0.3);
+            border: 2px solid #1a1a1a; border-radius: 10px; padding: 10px; min-height: 80px;
+            flex-shrink: 0; background: rgba(255,255,255,0.3);
         }
         .attacks-box { 
-            border: 2px solid #1a1a1a; 
-            border-radius: 10px; 
-            padding: 10px; 
-            background: rgba(255,255,255,0.2);
+            border: 2px solid #1a1a1a; border-radius: 10px; padding: 10px; background: rgba(255,255,255,0.2);
         }
         table { width: 100%; border-collapse: collapse; }
         th, td { border: 1px solid #b3a580; padding: 2px; text-align: left; font-size: 10px;}
         th { background: rgba(0,0,0,0.05); }
 
         .trait-box {
-            border: 2px solid #1a1a1a;
-            border-radius: 10px;
-            padding: 10px;
-            background: rgba(255,255,255,0.3);
-            min-height: 60px;
-            flex-shrink: 0;
+            border: 2px solid #1a1a1a; border-radius: 10px; padding: 10px;
+            background: rgba(255,255,255,0.3); min-height: 60px; flex-shrink: 0;
         }
         
         textarea.lined {
             background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="20px"><line x1="0" y1="20" x2="100%" y2="20" stroke="%23b3a580" stroke-width="1"/></svg>');
-            line-height: 20px;
-            border: none;
+            line-height: 20px; border: none;
         }
+
+        /* --- PANEL FLOTANTE DE BOTONES --- */
+        .controls-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .btn-control {
+            background-color: #4a4030;
+            color: #f9f1d5;
+            border: 2px solid #2b2b2b;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            transition: all 0.2s;
+            font-size: 14px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-control:hover { transform: scale(1.05); background-color: darkred; color: white; }
+        .btn-control.primary { background-color: darkred; color: white; border-color: #000; font-size: 16px; }
+        
+        /* Input file oculto */
+        #file-upload { display: none; }
 
     </style>
 </head>
 <body>
 
-<div class="sheet-container">
+<div class="controls-panel">
+    <button class="btn-control primary" onclick="downloadSheet()">💾 Descargar Personaje</button>
+    <button class="btn-control" onclick="document.getElementById('file-upload').click()">📂 Cargar Archivo</button>
+    <input type="file" id="file-upload" accept=".json" onchange="loadSheet(this)">
+</div>
+
+<div class="sheet-container" id="character-sheet">
     
     <header>
         <div class="logo-container">
@@ -338,128 +246,98 @@
         </div>
 
         <div class="header-left">
-            <input type="text" placeholder="Nombre" class="char-name-input">
+            <input type="text" name="char_name" placeholder="Nombre" class="char-name-input">
             <span class="label label-left">Nombre del Personaje</span>
         </div>
         
         <div class="header-right">
-            <div class="header-box"><input type="text"><span class="label">Clase y Nivel</span></div>
-            <div class="header-box"><input type="text"><span class="label">Trasfondo</span></div>
-            <div class="header-box"><input type="text"><span class="label">Nombre del Jugador</span></div>
-            <div class="header-box"><input type="text"><span class="label">Raza</span></div>
-            <div class="header-box"><input type="text"><span class="label">Alineamiento</span></div>
-            <div class="header-box"><input type="text"><span class="label">Puntos de Experiencia</span></div>
+            <div class="header-box"><input type="text" name="class_level"><span class="label">Clase y Nivel</span></div>
+            <div class="header-box"><input type="text" name="background"><span class="label">Trasfondo</span></div>
+            <div class="header-box"><input type="text" name="player_name"><span class="label">Nombre del Jugador</span></div>
+            <div class="header-box"><input type="text" name="race"><span class="label">Raza</span></div>
+            <div class="header-box"><input type="text" name="alignment"><span class="label">Alineamiento</span></div>
+            <div class="header-box"><input type="text" name="xp"><span class="label">Puntos de Experiencia</span></div>
         </div>
     </header>
 
     <main>
         <div class="col-stats-complex">
-            
             <div class="stats-top-section">
                 <div class="attributes-stack">
-                    <div class="ability-box">
-                        <span class="ability-label">FUERZA</span>
-                        <input type="number" class="ability-score" value="10">
-                        <div class="ability-mod-circle"><input type="text" class="ability-mod-input" value="+0"></div>
-                    </div>
-                    <div class="ability-box">
-                        <span class="ability-label">DESTREZA</span>
-                        <input type="number" class="ability-score" value="10">
-                        <div class="ability-mod-circle"><input type="text" class="ability-mod-input" value="+0"></div>
-                    </div>
-                    <div class="ability-box">
-                        <span class="ability-label">CONSTITUCIÓN</span>
-                        <input type="number" class="ability-score" value="10">
-                        <div class="ability-mod-circle"><input type="text" class="ability-mod-input" value="+0"></div>
-                    </div>
-                    <div class="ability-box">
-                        <span class="ability-label">INTELIGENCIA</span>
-                        <input type="number" class="ability-score" value="10">
-                        <div class="ability-mod-circle"><input type="text" class="ability-mod-input" value="+0"></div>
-                    </div>
-                    <div class="ability-box">
-                        <span class="ability-label">SABIDURÍA</span>
-                        <input type="number" class="ability-score" value="10">
-                        <div class="ability-mod-circle"><input type="text" class="ability-mod-input" value="+0"></div>
-                    </div>
-                    <div class="ability-box">
-                        <span class="ability-label">CARISMA</span>
-                        <input type="number" class="ability-score" value="10">
-                        <div class="ability-mod-circle"><input type="text" class="ability-mod-input" value="+0"></div>
-                    </div>
+                    <div class="ability-box"><span class="ability-label">FUERZA</span><input type="number" name="stats_str" class="ability-score" value="10"><div class="ability-mod-circle"><input type="text" name="mod_str" class="ability-mod-input" value="+0"></div></div>
+                    <div class="ability-box"><span class="ability-label">DESTREZA</span><input type="number" name="stats_dex" class="ability-score" value="10"><div class="ability-mod-circle"><input type="text" name="mod_dex" class="ability-mod-input" value="+0"></div></div>
+                    <div class="ability-box"><span class="ability-label">CONSTITUCIÓN</span><input type="number" name="stats_con" class="ability-score" value="10"><div class="ability-mod-circle"><input type="text" name="mod_con" class="ability-mod-input" value="+0"></div></div>
+                    <div class="ability-box"><span class="ability-label">INTELIGENCIA</span><input type="number" name="stats_int" class="ability-score" value="10"><div class="ability-mod-circle"><input type="text" name="mod_int" class="ability-mod-input" value="+0"></div></div>
+                    <div class="ability-box"><span class="ability-label">SABIDURÍA</span><input type="number" name="stats_wis" class="ability-score" value="10"><div class="ability-mod-circle"><input type="text" name="mod_wis" class="ability-mod-input" value="+0"></div></div>
+                    <div class="ability-box"><span class="ability-label">CARISMA</span><input type="number" name="stats_cha" class="ability-score" value="10"><div class="ability-mod-circle"><input type="text" name="mod_cha" class="ability-mod-input" value="+0"></div></div>
                 </div>
 
                 <div class="skills-stack">
-                    <div class="small-stat-row">
-                        <input type="number"> <span class="label label-left">Inspiración</span>
-                    </div>
-                    <div class="small-stat-row">
-                        <input type="number" value="+2"> <span class="label label-left">Bonificador de Competencia</span>
-                    </div>
+                    <div class="small-stat-row"><input type="number" name="inspiration"> <span class="label label-left">Inspiración</span></div>
+                    <div class="small-stat-row"><input type="number" name="proficiency_bonus" value="+2"> <span class="label label-left">Bonificador de Competencia</span></div>
 
                     <div class="list-section">
                         <span class="label">Tiradas de Salvación</span>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Fuerza</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Destreza</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Constitución</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Inteligencia</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Sabiduría</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Carisma</div>
+                        <div class="skill-row"><input type="checkbox" name="save_str_prof"><input type="number" name="save_str_mod"> Fuerza</div>
+                        <div class="skill-row"><input type="checkbox" name="save_dex_prof"><input type="number" name="save_dex_mod"> Destreza</div>
+                        <div class="skill-row"><input type="checkbox" name="save_con_prof"><input type="number" name="save_con_mod"> Constitución</div>
+                        <div class="skill-row"><input type="checkbox" name="save_int_prof"><input type="number" name="save_int_mod"> Inteligencia</div>
+                        <div class="skill-row"><input type="checkbox" name="save_wis_prof"><input type="number" name="save_wis_mod"> Sabiduría</div>
+                        <div class="skill-row"><input type="checkbox" name="save_cha_prof"><input type="number" name="save_cha_mod"> Carisma</div>
                     </div>
 
                     <div class="list-section flex-grow-box" style="flex-grow:0;">
                         <span class="label">Habilidades</span>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Acrobacias (Des)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Arcanos (Int)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Atletismo (Fue)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Engaño (Car)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Historia (Int)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Interpretación (Car)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Intimidación (Car)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Investigación (Int)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Juego de Manos (Des)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Medicina (Sab)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Naturaleza (Int)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Percepción (Sab)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Perspicacia (Sab)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Persuasión (Car)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Religión (Int)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Sigilo (Des)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Supervivencia (Sab)</div>
-                        <div class="skill-row"><input type="checkbox"><input type="number"> Trato con Animales (Sab)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_acrobatics_prof"><input type="number" name="skill_acrobatics_mod"> Acrobacias (Des)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_arcana_prof"><input type="number" name="skill_arcana_mod"> Arcanos (Int)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_athletics_prof"><input type="number" name="skill_athletics_mod"> Atletismo (Fue)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_deception_prof"><input type="number" name="skill_deception_mod"> Engaño (Car)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_history_prof"><input type="number" name="skill_history_mod"> Historia (Int)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_insight_prof"><input type="number" name="skill_insight_mod"> Interpretación (Car)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_intimidation_prof"><input type="number" name="skill_intimidation_mod"> Intimidación (Car)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_investigation_prof"><input type="number" name="skill_investigation_mod"> Investigación (Int)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_sleight_prof"><input type="number" name="skill_sleight_mod"> Juego de Manos (Des)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_medicine_prof"><input type="number" name="skill_medicine_mod"> Medicina (Sab)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_nature_prof"><input type="number" name="skill_nature_mod"> Naturaleza (Int)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_perception_prof"><input type="number" name="skill_perception_mod"> Percepción (Sab)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_performance_prof"><input type="number" name="skill_performance_mod"> Perspicacia (Sab)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_persuasion_prof"><input type="number" name="skill_persuasion_mod"> Persuasión (Car)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_religion_prof"><input type="number" name="skill_religion_mod"> Religión (Int)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_stealth_prof"><input type="number" name="skill_stealth_mod"> Sigilo (Des)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_survival_prof"><input type="number" name="skill_survival_mod"> Supervivencia (Sab)</div>
+                        <div class="skill-row"><input type="checkbox" name="skill_handling_prof"><input type="number" name="skill_handling_mod"> Trato con Animales (Sab)</div>
                     </div>
                 </div>
             </div>
 
             <div class="passive-percep-box">
-                <span style="margin-right:10px; font-weight:bold;">10</span> Sabiduría Pasiva (Percepción)
+                <input type="number" name="passive_wisdom" style="width: 30px; font-weight: bold; text-align: center; margin-right: 5px;"> Sabiduría Pasiva (Percepción)
             </div>
 
             <div class="other-profs-box">
                 <span class="label label-left">Otras Competencias e Idiomas</span>
-                <textarea class="lined"></textarea>
+                <textarea name="other_proficiencies" class="lined"></textarea>
             </div>
-
         </div>
 
         <div class="col-combat">
             <div class="combat-header">
-                <div class="shield-box"><input type="number" style="font-size:18px;"><span class="label">Clase de Arm.</span></div>
-                <div class="shield-box"><input type="number" style="font-size:18px;"><span class="label">Iniciativa</span></div>
-                <div class="shield-box"><input type="number" style="font-size:18px;"><span class="label">Velocidad</span></div>
+                <div class="shield-box"><input type="number" name="armor_class" style="font-size:18px;"><span class="label">Clase de Arm.</span></div>
+                <div class="shield-box"><input type="number" name="initiative" style="font-size:18px;"><span class="label">Iniciativa</span></div>
+                <div class="shield-box"><input type="number" name="speed" style="font-size:18px;"><span class="label">Velocidad</span></div>
             </div>
 
             <div class="hp-box">
                 <div style="display:flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5px;">
                     <span style="font-size: 10px; color:#555; white-space:nowrap; margin-right:5px;">Puntos de Golpe Máximos</span>
-                    <input type="text" style="width: 50%; text-align: center;">
+                    <input type="text" name="hp_max" style="width: 50%; text-align: center;">
                 </div>
-                <textarea style="font-size: 24px; text-align:center; height: 40px; border:none;"></textarea>
+                <textarea name="hp_current" style="font-size: 24px; text-align:center; height: 40px; border:none;"></textarea>
                 <span class="label">Puntos de Golpe Actuales</span>
             </div>
 
             <div class="hp-box" style="min-height:50px;">
-                <textarea style="height: 30px; border:none;"></textarea>
+                <textarea name="hp_temp" style="height: 30px; border:none;"></textarea>
                 <span class="label">Puntos de Golpe Temporales</span>
             </div>
 
@@ -468,45 +346,105 @@
                 <table>
                     <thead><tr><th width="40%">Nombre</th><th width="20%">Bono</th><th>Daño/Tipo</th></tr></thead>
                     <tbody>
-                        <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-                        <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-                        <tr><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                        <tr><td><input type="text" name="atk_name_1"></td><td><input type="text" name="atk_bonus_1"></td><td><input type="text" name="atk_damage_1"></td></tr>
+                        <tr><td><input type="text" name="atk_name_2"></td><td><input type="text" name="atk_bonus_2"></td><td><input type="text" name="atk_damage_2"></td></tr>
+                        <tr><td><input type="text" name="atk_name_3"></td><td><input type="text" name="atk_bonus_3"></td><td><input type="text" name="atk_damage_3"></td></tr>
                     </tbody>
                 </table>
-                <textarea class="lined" style="margin-top:10px; height: 60px;"></textarea>
+                <textarea name="attacks_text" class="lined" style="margin-top:10px; height: 60px;"></textarea>
             </div>
             
             <div class="attacks-box flex-grow-box">
                  <span class="label">Equipo</span>
-                 <textarea class="lined"></textarea>
+                 <textarea name="equipment" class="lined"></textarea>
             </div>
         </div>
 
         <div class="col-traits">
-            <div class="trait-box">
-                <textarea class="lined"></textarea>
-                <span class="label">Rasgos de Personalidad</span>
-            </div>
-            <div class="trait-box">
-                <textarea class="lined"></textarea>
-                <span class="label">Ideales</span>
-            </div>
-            <div class="trait-box">
-                <textarea class="lined"></textarea>
-                <span class="label">Vínculos</span>
-            </div>
-            <div class="trait-box">
-                <textarea class="lined"></textarea>
-                <span class="label">Defectos</span>
-            </div>
-            <div class="trait-box flex-grow-box">
-                <textarea class="lined"></textarea>
-                <span class="label">Rasgos y Atributos</span>
-            </div>
+            <div class="trait-box"><textarea name="personality_traits" class="lined"></textarea><span class="label">Rasgos de Personalidad</span></div>
+            <div class="trait-box"><textarea name="ideals" class="lined"></textarea><span class="label">Ideales</span></div>
+            <div class="trait-box"><textarea name="bonds" class="lined"></textarea><span class="label">Vínculos</span></div>
+            <div class="trait-box"><textarea name="flaws" class="lined"></textarea><span class="label">Defectos</span></div>
+            <div class="trait-box flex-grow-box"><textarea name="features_traits" class="lined"></textarea><span class="label">Rasgos y Atributos</span></div>
         </div>
 
     </main>
 </div>
+
+<script>
+    // 1. Función para Guardar (Descargar JSON)
+    function downloadSheet() {
+        const inputs = document.querySelectorAll('input, textarea');
+        let data = {};
+
+        // Recolectar datos
+        inputs.forEach(input => {
+            if (!input.name) return; // Ignorar si no tiene nombre
+            if(input.type === 'checkbox') {
+                data[input.name] = input.checked;
+            } else {
+                data[input.name] = input.value;
+            }
+        });
+
+        // Obtener nombre del personaje para el archivo
+        let charName = data['char_name'] || 'Personaje';
+        // Limpiar nombre para que sea seguro como nombre de archivo
+        charName = charName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+
+        // Convertir a texto JSON
+        const jsonStr = JSON.stringify(data, null, 2);
+        
+        // Crear un "Blob" (archivo virtual en memoria)
+        const blob = new Blob([jsonStr], {type: "application/json"});
+        const url = URL.createObjectURL(blob);
+
+        // Crear un enlace invisible y hacerle click para forzar descarga
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${charName}_hoja.json`;
+        document.body.appendChild(a);
+        a.click();
+        
+        // Limpieza
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    // 2. Función para Cargar (Leer JSON)
+    function loadSheet(inputElement) {
+        const file = inputElement.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                
+                // Rellenar campos
+                for (const [key, value] of Object.entries(data)) {
+                    const field = document.querySelector(`[name="${key}"]`);
+                    if (field) {
+                        if (field.type === 'checkbox') {
+                            field.checked = value;
+                        } else {
+                            field.value = value;
+                        }
+                    }
+                }
+                alert('¡Personaje cargado correctamente!');
+            } catch (error) {
+                console.error(error);
+                alert('Error al leer el archivo. Asegúrate de que sea un JSON válido.');
+            }
+            // Resetear el input para permitir cargar el mismo archivo de nuevo si se desea
+            inputElement.value = '';
+        };
+
+        reader.readAsText(file);
+    }
+</script>
 
 </body>
 </html>
