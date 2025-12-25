@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hoja de Personaje D&D 5e (Estática)</title>
+    <title>Hoja de Personaje D&D 5e (Completa)</title>
     <style>
         :root {
             --border-color: #2b2b2b;
@@ -19,11 +19,12 @@
             font-size: 11px;
             box-sizing: border-box;
         }
+        /* Estilo base de la hoja */
         .sheet-container {
             background-color: var(--bg-paper);
             width: 1100px;
             min-height: 1350px; 
-            margin: 0 auto;
+            margin: 0 auto 30px auto; /* Margen abajo para separar las hojas */
             padding: 40px;
             box-shadow: 0 0 15px rgba(0,0,0,0.2);
             position: relative;
@@ -60,7 +61,7 @@
         }
         .label-left { text-align: left; }
         
-        /* --- HEADER --- */
+        /* --- HEADER PRINCIPAL --- */
         header {
             display: flex;
             justify-content: space-between;
@@ -102,7 +103,7 @@
         }
         .header-box { border: 1px solid #b3a580; padding: 5px; background: rgba(255,255,255,0.2); }
 
-        /* --- GRID PRINCIPAL --- */
+        /* --- GRID PRINCIPAL (HOJA 1) --- */
         main {
             display: grid;
             grid-template-columns: 300px 1fr 1fr;
@@ -118,7 +119,7 @@
         .attributes-stack { display: flex; flex-direction: column; gap: 15px; width: 90px; flex-shrink: 0; }
         .skills-stack { display: flex; flex-direction: column; gap: 10px; width: 100%; }
 
-        /* --- STATS BOXES --- */
+        /* --- ESTILOS COMUNES --- */
         .ability-box {
             border: 2px solid #1a1a1a;
             border-radius: 10px;
@@ -140,7 +141,6 @@
         }
         .ability-mod-input { width: 30px !important; border: none !important; text-align: center; font-weight: bold; font-size: 14px; }
 
-        /* --- SKILLS & LISTS --- */
         .small-stat-row {
             display: flex; align-items: center; border: 2px solid #1a1a1a; border-radius: 10px; padding: 5px;
             margin-bottom: 5px; background: rgba(255,255,255,0.2);
@@ -166,7 +166,6 @@
         .flex-grow-box { flex-grow: 1; display: flex; flex-direction: column; }
         .flex-grow-box textarea { flex-grow: 1; height: 100%; resize: none; }
 
-        /* --- COMBAT & TRAITS --- */
         .combat-header { display: flex; justify-content: space-around; gap: 5px; flex-shrink: 0; }
         .shield-box {
             border: 2px solid #1a1a1a; padding: 5px; text-align: center; border-radius: 5px;
@@ -192,6 +191,95 @@
             background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="20px"><line x1="0" y1="20" x2="100%" y2="20" stroke="%23b3a580" stroke-width="1"/></svg>');
             line-height: 20px; border: none;
         }
+
+        /* --- ESTILOS DE LA PÁGINA DE CONJUROS --- */
+        .spell-header {
+            display: flex;
+            justify-content: space-between;
+            background-color: rgba(255,255,255,0.2);
+            border: 1px solid #b3a580;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .spell-header-box {
+            border: 2px solid #1a1a1a;
+            border-radius: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.4);
+            width: 23%;
+            text-align: center;
+        }
+        .spell-header-box input {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .spell-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr; /* 3 Columnas */
+            gap: 20px;
+            flex-grow: 1;
+        }
+        
+        .spell-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .spell-level-block {
+            border: 2px solid #1a1a1a;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .spell-level-header {
+            background-color: #e3dac0;
+            border-bottom: 1px solid #1a1a1a;
+            padding: 5px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .spell-level-title { font-weight: bold; font-size: 14px; text-transform: uppercase;}
+        
+        .spell-slots-inputs {
+            display: flex;
+            gap: 10px;
+            font-size: 9px;
+            align-items: center;
+        }
+        .spell-slots-inputs input {
+            width: 30px;
+            background: white;
+            border: 1px solid #7a7058;
+            text-align: center;
+        }
+
+        .spell-list {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .spell-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .spell-row input[type="text"] {
+            border-bottom: 1px solid #ccc;
+        }
+        .spell-row input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
 
         /* --- PANEL FLOTANTE DE BOTONES --- */
         .controls-panel {
@@ -228,6 +316,12 @@
         /* Input file oculto */
         #file-upload { display: none; }
 
+        @media print {
+            .controls-panel { display: none; }
+            .sheet-container { box-shadow: none; margin: 0; page-break-after: always; }
+            body { background-color: white; padding: 0; }
+        }
+
     </style>
 </head>
 <body>
@@ -238,18 +332,15 @@
     <input type="file" id="file-upload" accept=".json" onchange="loadSheet(this)">
 </div>
 
-<div class="sheet-container" id="character-sheet">
-    
+<div class="sheet-container" id="character-sheet-1">
     <header>
         <div class="logo-container">
             <img src="assets/img/logo.png" alt="D&D Logo" class="logo-img">
         </div>
-
         <div class="header-left">
             <input type="text" name="char_name" placeholder="Nombre" class="char-name-input">
             <span class="label label-left">Nombre del Personaje</span>
         </div>
-        
         <div class="header-right">
             <div class="header-box"><input type="text" name="class_level"><span class="label">Clase y Nivel</span></div>
             <div class="header-box"><input type="text" name="background"><span class="label">Trasfondo</span></div>
@@ -367,8 +458,220 @@
             <div class="trait-box"><textarea name="flaws" class="lined"></textarea><span class="label">Defectos</span></div>
             <div class="trait-box flex-grow-box"><textarea name="features_traits" class="lined"></textarea><span class="label">Rasgos y Atributos</span></div>
         </div>
-
     </main>
+</div>
+
+<div class="sheet-container spell-page" id="spell-sheet">
+    <div class="spell-header">
+        <div class="spell-header-box">
+            <input type="text" name="spell_class">
+            <span class="label">Clase Lanzadora de Conjuros</span>
+        </div>
+        <div class="spell-header-box">
+            <input type="text" name="spell_ability">
+            <span class="label">Característica de Lanzamiento</span>
+        </div>
+        <div class="spell-header-box">
+            <input type="number" name="spell_save_dc">
+            <span class="label">Salvación de Conjuro CD</span>
+        </div>
+        <div class="spell-header-box">
+            <input type="number" name="spell_atk_bonus">
+            <span class="label">Bonificador Ataque Conjuro</span>
+        </div>
+    </div>
+
+    <div class="spell-grid">
+        
+        <div class="spell-column">
+            <div class="spell-level-block">
+                <div class="spell-level-header">
+                    <span class="spell-level-title">0 - Trucos</span>
+                </div>
+                <div class="spell-list">
+                    <div class="spell-row"><input type="text" name="cantrip_1"></div>
+                    <div class="spell-row"><input type="text" name="cantrip_2"></div>
+                    <div class="spell-row"><input type="text" name="cantrip_3"></div>
+                    <div class="spell-row"><input type="text" name="cantrip_4"></div>
+                    <div class="spell-row"><input type="text" name="cantrip_5"></div>
+                    <div class="spell-row"><input type="text" name="cantrip_6"></div>
+                    <div class="spell-row"><input type="text" name="cantrip_7"></div>
+                    <div class="spell-row"><input type="text" name="cantrip_8"></div>
+                </div>
+            </div>
+
+            <div class="spell-level-block">
+                <div class="spell-level-header">
+                    <span class="spell-level-title">1</span>
+                    <div class="spell-slots-inputs">
+                        Totales <input type="number" name="slots_lvl1_total">
+                        Gastados <input type="number" name="slots_lvl1_expended">
+                    </div>
+                </div>
+                <div class="spell-list">
+                    <div class="spell-row"><input type="checkbox" name="spell_1_1_prep"><input type="text" name="spell_1_1"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_1_2_prep"><input type="text" name="spell_1_2"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_1_3_prep"><input type="text" name="spell_1_3"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_1_4_prep"><input type="text" name="spell_1_4"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_1_5_prep"><input type="text" name="spell_1_5"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_1_6_prep"><input type="text" name="spell_1_6"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_1_7_prep"><input type="text" name="spell_1_7"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_1_8_prep"><input type="text" name="spell_1_8"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_1_9_prep"><input type="text" name="spell_1_9"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_1_10_prep"><input type="text" name="spell_1_10"></div>
+                </div>
+            </div>
+
+            <div class="spell-level-block">
+                <div class="spell-level-header">
+                    <span class="spell-level-title">2</span>
+                    <div class="spell-slots-inputs">
+                        Totales <input type="number" name="slots_lvl2_total">
+                        Gastados <input type="number" name="slots_lvl2_expended">
+                    </div>
+                </div>
+                <div class="spell-list">
+                    <div class="spell-row"><input type="checkbox" name="spell_2_1_prep"><input type="text" name="spell_2_1"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_2_2_prep"><input type="text" name="spell_2_2"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_2_3_prep"><input type="text" name="spell_2_3"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_2_4_prep"><input type="text" name="spell_2_4"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_2_5_prep"><input type="text" name="spell_2_5"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_2_6_prep"><input type="text" name="spell_2_6"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_2_7_prep"><input type="text" name="spell_2_7"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spell-column">
+            <div class="spell-level-block">
+                <div class="spell-level-header">
+                    <span class="spell-level-title">3</span>
+                    <div class="spell-slots-inputs">
+                        Totales <input type="number" name="slots_lvl3_total">
+                        Gastados <input type="number" name="slots_lvl3_expended">
+                    </div>
+                </div>
+                <div class="spell-list">
+                    <div class="spell-row"><input type="checkbox" name="spell_3_1_prep"><input type="text" name="spell_3_1"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_3_2_prep"><input type="text" name="spell_3_2"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_3_3_prep"><input type="text" name="spell_3_3"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_3_4_prep"><input type="text" name="spell_3_4"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_3_5_prep"><input type="text" name="spell_3_5"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_3_6_prep"><input type="text" name="spell_3_6"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_3_7_prep"><input type="text" name="spell_3_7"></div>
+                </div>
+            </div>
+
+            <div class="spell-level-block">
+                <div class="spell-level-header">
+                    <span class="spell-level-title">4</span>
+                    <div class="spell-slots-inputs">
+                        Totales <input type="number" name="slots_lvl4_total">
+                        Gastados <input type="number" name="slots_lvl4_expended">
+                    </div>
+                </div>
+                <div class="spell-list">
+                    <div class="spell-row"><input type="checkbox" name="spell_4_1_prep"><input type="text" name="spell_4_1"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_4_2_prep"><input type="text" name="spell_4_2"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_4_3_prep"><input type="text" name="spell_4_3"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_4_4_prep"><input type="text" name="spell_4_4"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_4_5_prep"><input type="text" name="spell_4_5"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_4_6_prep"><input type="text" name="spell_4_6"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_4_7_prep"><input type="text" name="spell_4_7"></div>
+                </div>
+            </div>
+
+            <div class="spell-level-block">
+                <div class="spell-level-header">
+                    <span class="spell-level-title">5</span>
+                    <div class="spell-slots-inputs">
+                        Totales <input type="number" name="slots_lvl5_total">
+                        Gastados <input type="number" name="slots_lvl5_expended">
+                    </div>
+                </div>
+                <div class="spell-list">
+                    <div class="spell-row"><input type="checkbox" name="spell_5_1_prep"><input type="text" name="spell_5_1"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_5_2_prep"><input type="text" name="spell_5_2"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_5_3_prep"><input type="text" name="spell_5_3"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_5_4_prep"><input type="text" name="spell_5_4"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_5_5_prep"><input type="text" name="spell_5_5"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_5_6_prep"><input type="text" name="spell_5_6"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_5_7_prep"><input type="text" name="spell_5_7"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spell-column">
+            <div class="spell-level-block">
+                <div class="spell-level-header">
+                    <span class="spell-level-title">6</span>
+                    <div class="spell-slots-inputs">
+                        Totales <input type="number" name="slots_lvl6_total">
+                        Gastados <input type="number" name="slots_lvl6_expended">
+                    </div>
+                </div>
+                <div class="spell-list">
+                    <div class="spell-row"><input type="checkbox" name="spell_6_1_prep"><input type="text" name="spell_6_1"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_6_2_prep"><input type="text" name="spell_6_2"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_6_3_prep"><input type="text" name="spell_6_3"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_6_4_prep"><input type="text" name="spell_6_4"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_6_5_prep"><input type="text" name="spell_6_5"></div>
+                </div>
+            </div>
+
+            <div class="spell-level-block">
+                <div class="spell-level-header">
+                    <span class="spell-level-title">7</span>
+                    <div class="spell-slots-inputs">
+                        Totales <input type="number" name="slots_lvl7_total">
+                        Gastados <input type="number" name="slots_lvl7_expended">
+                    </div>
+                </div>
+                <div class="spell-list">
+                    <div class="spell-row"><input type="checkbox" name="spell_7_1_prep"><input type="text" name="spell_7_1"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_7_2_prep"><input type="text" name="spell_7_2"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_7_3_prep"><input type="text" name="spell_7_3"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_7_4_prep"><input type="text" name="spell_7_4"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_7_5_prep"><input type="text" name="spell_7_5"></div>
+                </div>
+            </div>
+
+            <div class="spell-level-block">
+                <div class="spell-level-header">
+                    <span class="spell-level-title">8</span>
+                    <div class="spell-slots-inputs">
+                        Totales <input type="number" name="slots_lvl8_total">
+                        Gastados <input type="number" name="slots_lvl8_expended">
+                    </div>
+                </div>
+                <div class="spell-list">
+                    <div class="spell-row"><input type="checkbox" name="spell_8_1_prep"><input type="text" name="spell_8_1"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_8_2_prep"><input type="text" name="spell_8_2"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_8_3_prep"><input type="text" name="spell_8_3"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_8_4_prep"><input type="text" name="spell_8_4"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_8_5_prep"><input type="text" name="spell_8_5"></div>
+                </div>
+            </div>
+
+            <div class="spell-level-block">
+                <div class="spell-level-header">
+                    <span class="spell-level-title">9</span>
+                    <div class="spell-slots-inputs">
+                        Totales <input type="number" name="slots_lvl9_total">
+                        Gastados <input type="number" name="slots_lvl9_expended">
+                    </div>
+                </div>
+                <div class="spell-list">
+                    <div class="spell-row"><input type="checkbox" name="spell_9_1_prep"><input type="text" name="spell_9_1"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_9_2_prep"><input type="text" name="spell_9_2"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_9_3_prep"><input type="text" name="spell_9_3"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_9_4_prep"><input type="text" name="spell_9_4"></div>
+                    <div class="spell-row"><input type="checkbox" name="spell_9_5_prep"><input type="text" name="spell_9_5"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 <script>
